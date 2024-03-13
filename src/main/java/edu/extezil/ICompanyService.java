@@ -23,6 +23,6 @@ public interface ICompanyService {
      *
      * @return count of employees
      */
-    long getEmployeeCountForCompanyAndChildren(Company company, List<Company> companies);
+    long getEmployeeCountForCompanyAndChildren(Company company, List<Company> companies) throws Exception;
 
 }
