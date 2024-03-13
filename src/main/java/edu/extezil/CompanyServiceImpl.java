@@ -25,9 +25,9 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     @Override
-    public long getEmployeeCountForCompanyAndChildren(Company company, List<Company> companies) {
+    public long getEmployeeCountForCompanyAndChildren(Company company, List<Company> companies) throws Exception {
         if (company == null || companies == null || companies.isEmpty()) {
-            return 0;
+            throw new Exception("Company or companies are null or empty.");
         }
 
         long employeeCount = getEmployeeCount(company);

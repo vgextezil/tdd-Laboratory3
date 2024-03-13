@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,6 +43,46 @@ class CompanyServiceImplTest {
         Assertions.assertNull(result);
     }
 
+
+    @Test
+    public void testGetEmployeeCountForCompanyAndChildren_CompanyNull() {
+        List<Company> companies = new ArrayList<>();
+        // Add companies if needed
+        Exception exception = assertThrows(Exception.class, () -> {
+            companyService.getEmployeeCountForCompanyAndChildren(null, companies);
+        });
+
+        String expectedMessage = "Company or companies are null or empty.";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    public void testGetEmployeeCountForCompanyAndChildren_CompaniesNull() {
+        Exception exception = assertThrows(Exception.class, () -> {
+            companyService.getEmployeeCountForCompanyAndChildren(main, null);
+        });
+
+        String expectedMessage = "Company or companies are null or empty.";
+        String actualMessage = exception.getMessage();
+        assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    public void testGetEmployeeCountForCompanyAndChildren_CompaniesEmpty() {
+        List<Company> companies = new ArrayList<>();
+
+        Exception exception = assertThrows(Exception.class, () -> {
+            companyService.getEmployeeCountForCompanyAndChildren(main, companies);
+        });
+
+        String expectedMessage = "Company or companies are null or empty.";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(expectedMessage, actualMessage);
+    }
+
     @Test
     void whenCompanyHasNoParentItIsOnTop() {
         Company result = companyService.getTopLevelParent(main);
@@ -63,37 +104,18 @@ class CompanyServiceImplTest {
         Company result = companyService.getTopLevelParent(developer);
         Assertions.assertEquals(main, result);
     }
-    @Test
-    void whenCompanyIsNullThen0() {
-        long result = companyService.getEmployeeCountForCompanyAndChildren(null, Collections.emptyList());
-        assertEquals(0, result);
-    }
 
     @Test
-    void whenCompaniesListIsNullThen0(){
-        long result = companyService.getEmployeeCountForCompanyAndChildren(main, null);
-        assertEquals(0, result);
-    }
-
-    @Test
-    void whenCompanyListIsEmptyThen0() {
-        long result = companyService.getEmployeeCountForCompanyAndChildren(main, Collections.emptyList());
-        assertEquals(0, result);
-    }
-    @Test
-    void whenCompanyOnLowLevelThenFindCountEmployees(){
+    void whenCompanyOnLowLevelThenFindCountEmployees() throws Exception {
         assertEquals(8,companyService.getEmployeeCountForCompanyAndChildren(developer, list));
         assertEquals(6,companyService.getEmployeeCountForCompanyAndChildren(design, list));
     }
     @Test
-    void whenCompanyHasOneOrMoreChildThenFindCountEmployees(){
+    void whenCompanyHasOneOrMoreChildThenFindCountEmployees() throws Exception {
         assertEquals(18,companyService.getEmployeeCountForCompanyAndChildren(manager, list));
     }
     @Test
-    void whenCompanyOnTonAndHasChildAndChildHasChildThenFindCountEmployees(){
+    void whenCompanyOnTonAndHasChildAndChildHasChildThenFindCountEmployees() throws Exception {
         assertEquals(23,companyService.getEmployeeCountForCompanyAndChildren(main, list));
     }
-
-
-
 }
